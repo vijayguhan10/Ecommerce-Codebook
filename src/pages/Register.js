@@ -6,18 +6,23 @@ export const Register = () => {
       email: event.target.email.value,
       password: event.target.password.value,
     };
-    const requestOptions = {
-      method: "POST",
-      headers: { "content-Type": "application/json" },
-      body: JSON.stringify(authDetail),
-    };
 
-    const response = await fetch(
-      "http://localhost:8000/register",
-      requestOptions
-    );
-    const data = await response.json();
-    console.log(data);
+    try {
+      const response = await fetch("http://localhost:8000/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(authDetail),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to register");
+      }
+
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error("Error registering:", error.message);
+    }
   }
 
   return (
